@@ -11,12 +11,41 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Background="Transparent"
-        Height="500" Width="800">
+        Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding ExcuteCommand}" CommandParameter="Login"></KeyBinding>
+    </Window.InputBindings>
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="500" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <StackPanel 
+            Grid.ColumnSpan="2" 
+            Panel.ZIndex="2" 
+            Height="40" 
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top" 
+            Width="auto"
+            Margin="0 0 10 0"
+            Orientation="Horizontal">
+            <Button
+                Content="—"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Command="{Binding MiniMizeCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                Style="{StaticResource MaterialDesignFlatMidBgButton}" />
+            <Button
+                BorderBrush="Transparent"
+                Background="Transparent"
+                
+                Command="{Binding CloseCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                Content="✕"
+                Style="{StaticResource MaterialDesignFlatMidBgButton}" />
+        </StackPanel>
         <Rectangle 
             Panel.ZIndex="1" 
             Fill="Transparent" 
@@ -29,7 +58,7 @@
             Style="{StaticResource BackgroundColor}"  
             Grid.ColumnSpan="2" 
             BorderThickness="2 1 2 2" 
-            CornerRadius="30" 
+            CornerRadius="25" 
             >
             <Border.Background>
                 <LinearGradientBrush EndPoint="1,0" StartPoint="1,1">
@@ -39,14 +68,17 @@
             </Border.Background>
         </Border>
         <views:IconView Grid.Column="0" Grid.ColumnSpan="1"></views:IconView>
-        <md:Transitioner Grid.Column="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=2}">
+        <md:Transitioner  Grid.Column="1" SelectedIndex="{Binding SelectedIndex, FallbackValue=0}">
             <md:TransitionerSlide>
+                <md:TransitionerSlide.OpeningEffects>
+                    <md:TransitionEffect Kind="FadeIn"></md:TransitionEffect>
+                </md:TransitionerSlide.OpeningEffects>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" Width="230">
-
                     <TextBlock Text="XPNote" FontFamily="/assets/Fonts/Conther-2.ttf" HorizontalAlignment="Center" FontSize="40" Style="{StaticResource MaterialDesignBody2TextBlock}"/>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image/>
                         <TextBox 
+                            Style="{StaticResource LoginBox}"
                             md:HintAssist.Hint="用户名" 
                             x:Name="username" Width="200" 
                             Text="{Binding LogInUser.UserName}"/>
@@ -55,6 +87,7 @@
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image></Image>
                         <PasswordBox 
+                            Style="{StaticResource Password}"
                             md:PasswordBoxAssist.Password="{Binding LogInUser.Password}"
                             md:HintAssist.Hint="密码"
                             x:Name="password"
@@ -90,7 +123,7 @@
             </md:TransitionerSlide>
             <md:TransitionerSlide>
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" Width="230">
-                    <TextBlock Text="Register" FontFamily="/assets/Fonts/QingNiaoHuaGuangXingKai-2.ttf" HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignBody2TextBlock}"/>
+                    <TextBlock Text="Register" FontFamily="Conther" HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignBody2TextBlock}" Height="24.3"/>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image/>
                         <TextBox 
@@ -131,48 +164,53 @@
                             />
                 </StackPanel>
             </md:TransitionerSlide>
-            <md:TransitionerSlide>
+            <md:TransitionerSlide Margin="-3,-8,3,8">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Height="auto" Width="230">
                     <TextBlock Text="Retrieve your password" FontFamily="/assets/Fonts/QingNiaoHuaGuangXingKai-2.ttf" HorizontalAlignment="Center" FontSize="20" Style="{StaticResource MaterialDesignBody2TextBlock}"/>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image/>
                         <TextBox 
+                            Style="{StaticResource LoginBox}"
                             md:HintAssist.Hint="用户名" 
                              Width="200" 
-                            Text="{Binding RegisterUser.UserName}"/>
+                            Text="{Binding Name}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image></Image>
                         <PasswordBox 
-                            md:PasswordBoxAssist.Password="{Binding RegisterUser.Email}"
+                            Style="{StaticResource Password}"
+                            md:PasswordBoxAssist.Password="{Binding NewPassword}"
                             md:HintAssist.Hint="新密码"
                             Width="200"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image></Image>
                         <PasswordBox 
-                            md:PasswordBoxAssist.Password="{Binding RegisterUser.Email}"
+                            Style="{StaticResource Password}"
+                            md:PasswordBoxAssist.Password="{Binding ReNewPassword}"
                             md:HintAssist.Hint="确认新密码"
                             Width="200"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image></Image>
-                        <PasswordBox 
-                            md:PasswordBoxAssist.Password="{Binding RegisterUser.Email}"
+                        <TextBox
+                            Style="{StaticResource LoginBox}"
+                            Text="{Binding Email}"
                             md:HintAssist.Hint="邮箱"
                             Width="200"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="10 10">
                         <Image></Image>
-                        <PasswordBox 
-                            md:PasswordBoxAssist.Password="{Binding RegisterUser.Email}"
+                        <TextBox
+                            Style="{StaticResource LoginBox}"
+                            Text="{Binding Code}"
                             md:HintAssist.Hint="验证码"
                             Width="200"/>
                     </StackPanel>
                     <Button Width="150" Margin="0 10 0 0"
                         Content="验证"
                         Command="{Binding ExcuteCommand}"
-                        CommandParameter="Register"
+                        CommandParameter="Retrieve"
                         Style="{StaticResource MaterialDesignRaisedLightButton}"
                         md:ButtonAssist.CornerRadius="5"
                     />
@@ -184,7 +222,7 @@
                         Foreground="Black"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        md:ButtonAssist.CornerRadius="5"
+                        md:ButtonAssist.CornerRadius="5" 
                             />
                 </StackPanel>
             </md:TransitionerSlide>

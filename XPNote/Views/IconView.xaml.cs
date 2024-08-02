@@ -18,7 +18,7 @@ namespace XPNote.Views
     /// <summary>
     /// IconView.xaml 的交互逻辑
     /// </summary>
-    public partial class IconView : UserControl
+    public partial class IconView:Grid
     {
         public IconView()
         {

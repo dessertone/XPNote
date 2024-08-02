@@ -11,6 +11,7 @@ using Serilog;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Runtime.InteropServices.JavaScript;
 using Microsoft.Win32;
+using XPNote.Services;
 
 namespace XPNote
 {
@@ -26,6 +27,8 @@ namespace XPNote
                 using var host = CreateHostBuilder(args).Build();
                 host.Start();
                 var logger = host.Services.GetRequiredService<ILogger<App>>();
+                var level = host.Services.GetRequiredService<IConfiguration>()["logging:loglevel:default"];
+                logger.LogInformation("level:{0}",level);
                 App app = new App();
                 app.InitializeComponent();
                 var login = host.Services.GetRequiredService<LoginView>();
@@ -33,6 +36,7 @@ namespace XPNote
                 app.MainWindow = host.Services.GetRequiredService<LoginView>();
                 app.MainWindow.Visibility = Visibility.Visible;
                 app.Run();
+                
             }
             catch (FileNotFoundException)
             {
@@ -52,13 +56,14 @@ namespace XPNote
                 })
                 .ConfigureServices(container =>
                 {
-                    container.AddSingleton<MainWindowViewModel>()
-                             .AddSingleton(sp => new MainWindow() { DataContext = sp.GetService<MainWindowViewModel>() })
-                             .AddSingleton<LoginViewModel>()
-                             .AddSingleton(sp => new LoginView() { DataContext = sp.GetService<LoginViewModel>() })
+                    container.AddTransient<IWindowService, WindowService>()
+                             .AddTransient<MainWindowViewModel>()
+                             .AddTransient(sp => new MainWindow() { DataContext = sp.GetService<MainWindowViewModel>() })
+                             .AddTransient<LoginViewModel>()
+                             .AddTransient(sp => new LoginView() { DataContext = sp.GetService<LoginViewModel>() })
                              .AddSingleton<WeakReferenceMessenger>()
                              .AddSingleton<IMessenger, WeakReferenceMessenger>(provider => 
-                             provider.GetRequiredService<WeakReferenceMessenger>());
+                             provider.GetRequiredService<WeakReferenceMessenger>()) ;
                              
                 })
                 .ConfigureLogging(logging =>

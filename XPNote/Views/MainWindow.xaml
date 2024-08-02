@@ -8,10 +8,11 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d"
-
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
         Background="{DynamicResource ApplicationBackgroundBrush}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Content="navigate to login window" Command="{Binding CloseCommand}"></Button>
     </Grid>
 </Window>
